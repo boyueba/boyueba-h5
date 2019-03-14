@@ -7,7 +7,8 @@ axios.defaults.baseURL = CONSTANT.baseUrl || '/jiekou';
 axios.interceptors.request.use(config => {
 	config.headers = {
 		'Content-Type': 'application/json;charset=UTF-8'
-	}
+	};
+	config.withCredentials = true;
 	return config;
 });
 // 添加响应拦截器
