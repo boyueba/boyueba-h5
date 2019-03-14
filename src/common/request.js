@@ -1,8 +1,9 @@
 import {publicPath} from './config';
 import axios from 'axios';
 import {Toast} from 'mint-ui';
+import {baseUrl} from './CONSTANT'
 
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = baseUrl + "/api";
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {

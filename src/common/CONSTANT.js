@@ -1,4 +1,5 @@
 export default {
+	baseUrl: 'http://www.boyueba.com:8090/byb',
 	storyState: [{
 		key: 0,
 		value: '未知'
