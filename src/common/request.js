@@ -1,8 +1,7 @@
 import axios from 'axios';
 import {Toast} from 'mint-ui';
 import CONSTANT from './CONSTANT'
-console.log(CONSTANT.baseUrl + "/api")
-axios.defaults.baseURL = (process.env.NODE_ENV === 'development' ? "" : CONSTANT.baseUrl) + "/api";
+axios.defaults.baseURL = "/jiekou";
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {

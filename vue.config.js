@@ -4,12 +4,12 @@ module.exports = {
   // webpack-dev-server 相关配置
   devServer: {
     proxy: {
-      '/api': {
+      '/jiekou': {
         target: 'http://www.boyueba.com:8090',
         // target: 'http://127.0.0.1:5080',
         changeOrigin: true,
 	      pathRewrite: {
-		      '^/api': '/byb/api'
+		      '^/jiekou': '/byb/api'
 	      }
       }
     }
