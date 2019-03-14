@@ -3,6 +3,13 @@ import {Toast} from 'mint-ui';
 import CONSTANT from './CONSTANT'
 axios.defaults.baseURL = CONSTANT.baseUrl || '/jiekou';
 
+// 添加请求拦截器
+axios.interceptors.request.use(config => {
+	config.headers = {
+		'Content-Type': 'application/json;charset=UTF-8'
+	}
+	return config;
+});
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
 	// 对响应数据做点什么
