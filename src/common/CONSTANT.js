@@ -1,5 +1,5 @@
 export default {
-	baseUrl: 'http://www.boyueba.com:8090/byb',
+	baseUrl: process.env.NODE_ENV === 'development' ? '' : 'http://www.boyueba.com:8090/byb/api',
 	storyState: [{
 		key: 0,
 		value: '未知'

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Toast} from 'mint-ui';
 import CONSTANT from './CONSTANT'
-axios.defaults.baseURL = "/jiekou";
+axios.defaults.baseURL = CONSTANT.baseUrl || '/jiekou';
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
