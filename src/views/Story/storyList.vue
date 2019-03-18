@@ -1,0 +1,102 @@
+<template>
+  <div>
+    <header class="story-header" flex="main:center">
+      <div class="story-bar" flex="box:mean cross:center main:center">
+        <div :class="{active: index === sexIndex}"
+             v-for="(item, index) in sexList" :key="index"
+             @click="handleSex(index)">{{item.name}}</div>
+      </div>
+    </header>
+    <article>
+      <ul class="story-type">
+        <li v-for="(item, index) in typeList" :key="index">{{item.typeText}}</li>
+      </ul>
+    </article>
+    <StoryList></StoryList>
+  </div>
+</template>
+<script>
+  import StoryList from '../../components/story/storyList.vue'
+	export default {
+		name: 'story-storyList',
+    components: {
+	    StoryList
+    },
+    data() {
+			return {
+				sexList: [{name: '男生', channel: 1}, {name: '女生', channel: 2}],
+        sexIndex: 0,
+        typeList: [],
+				storyList: []
+      }
+    },
+    created: function () {
+      this.getNovelType(this.sexList[0].channel);
+    },
+    methods: {
+			// 性别类型切换
+      handleSex: function (index) {
+        this.sexIndex = index;
+        this.getNovelType(this.sexList[index].channel);
+      },
+      // 获取分类
+      getNovelType: function (channel) {
+	      const params = {
+		      channel
+	      };
+	      this.$store.dispatch('getForm', {
+		      url: this.$api.novelType,
+		      data: params
+	      }).then(res => {
+		      console.log('novelType', res);
+		      this.typeList = res;
+	      })
+      }
+    }
+	}
+</script>
+<style lang="scss" scoped>
+  .story-header{
+    height: 1rem;
+    border-bottom: 1px solid #e9e9e9;
+    .story-bar{
+      width: 2.2rem;
+      height: 0.7rem;
+      margin: 0.15rem 0;
+      border: 1px solid #ed424b;
+      color: #ed424b;
+      box-sizing: border-box;
+      border-radius: 4px;
+      text-align: center;
+      .active{
+        background-color: #ed424b;
+        color: #ffffff;
+        line-height: 0.7rem;
+      }
+    }
+  }
+  .story-type{
+    line-height: 0.8rem;
+    border-bottom: 1px solid #e9e9e9;
+    li{
+      position: relative;
+      display: inline-block;
+      width: 20%;
+      box-sizing: border-box;
+      height: 0.8rem;
+      text-align: center;
+      border-bottom: 1px solid #e9e9e9;
+      bottom: -1px;
+      &:not(:nth-child(5n)):after{
+        content: '';
+        width: 1px;
+        height: 0.4rem;
+        position: absolute;
+        right: 0;
+        top: 0.2rem;
+        border-right: 1px solid #e9e9e9;
+      }
+    }
+  }
+
+</style>

@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <div class="story-header" flex="main:center">
-      <div class="story-bar" flex="box:mean cross:center main:center">
-        <div>男生</div>
-        <div>女生</div>
-      </div>
-    </div>
+  <article>
     <div class="story-list">
       <ul class="list">
         <li class="list-item" flex="box:first"
@@ -20,46 +14,39 @@
         </li>
       </ul>
     </div>
-  </div>
+  </article>
 </template>
 <script>
 	export default {
-		name: 'story-storyList',
+		name: 'storyList',
     data() {
 			return {
 				storyList: []
       }
     },
-    created: function () {
-      console.log(this)
-      const params = {
-	      pageNum: 1,
-	      pageSize: 10
-      };
-      this.$store.dispatch('getForm', {
-      	url: this.$api.novelList,
-        data: params
-      }).then(res => {
-      	console.log(res);
-      	const {list} = res;
-      	this.storyList = list;
-      })
+    created() {
+			this.initData();
+    },
+    methods: {
+			initData: function () {
+				console.log(this)
+				const params = {
+					pageNum: 1,
+					pageSize: 10
+				};
+				this.$store.dispatch('getForm', {
+					url: this.$api.novelList,
+					data: params
+				}).then(res => {
+					console.log(res);
+					const {list} = res;
+					this.storyList = list;
+				})
+			}
     }
 	}
 </script>
 <style lang="scss" scoped>
-  .story-header{
-    height: 1rem;
-    .story-bar{
-      width: 2.2rem;
-      height: 0.8rem;
-      margin: 0.1rem 0;
-      border: 1px solid #ed424b;
-      box-sizing: border-box;
-      border-radius: 4px;
-      text-align: center;
-    }
-  }
   .story-list{
     padding: 0.2rem 0.3rem;
     .list-item{
