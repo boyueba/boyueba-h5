@@ -7,3 +7,10 @@ ul, p{
   padding: 0;
   margin: 0;
 }
+
+/*========mint UI 重置 start========*/
+.mint-button--normal{
+  padding: 0 10px;
+}
+
+/*========mint UI 重置 end========*/

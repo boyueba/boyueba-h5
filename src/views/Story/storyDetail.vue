@@ -48,29 +48,23 @@
     },
     created() {
 			this.initData();
-	    console.log(this.$route);
     },
     methods: {
 			initData: function () {
-				const params = {
-					pageNum: 1,
-					pageSize: 10
-				};
+				const {novelId} = this.$route.params;
+				const params = {novelId};
 				this.$store.dispatch('getForm', {
-					url: this.$api.novelList,
+					url: this.$api.novelInfo,
 					data: params
 				}).then(res => {
-					console.log(res);
-					const {list} = res;
-					this.storyInfo = list[0];
+					console.log('novelInfo', res);
+					this.storyInfo = res;
 				})
 			},
 	    btnRead: function () {
-				const novelId = this.$route.params.novelId;
-				this.$store.dispatch('initNovel', {novelId}).then((res) => {
-					this.$router.push(`/story-page?novelId=${novelId}&sectionId=${res.sectionId}`);
-        });
-
+				const {novelId, sectionId, sort} = this.storyInfo;
+				const obj = {novelId, sectionId, sort};
+		    this.$router.push(`/story-page?${this.$utils.changeObjToStr(obj)}`);
 	    }
     }
 	}

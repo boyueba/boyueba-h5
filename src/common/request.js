@@ -33,7 +33,6 @@ const apiAxios = (method, url, params = {}) => {
 			params: method === 'GET' || method === 'DELETE' ? params : null,
 			headers: {Authorization: sessionStorage.token || ''}
 		}).then(function (res) {
-			console.log('axios1', res, params);
 			if(res.hasOwnProperty('data') && res.data){
 				resolve(res.data);
 			}

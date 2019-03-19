@@ -1,12 +1,12 @@
 <template>
   <div class="story-page">
     <div class="app-wrapper" @click="handlePage">
-      <div class="app-scroll">
+      <div class="app-scroll" ref="appScroll">
         <article>
-          <p class="story-title">{{novelTitle}}</p>
-          <p v-html="novelContent"></p>
+          <p class="story-title">{{info.title}}</p>
+          <p v-html="info.content"></p>
           <div class="btn-footer" flex="box:last">
-            <mt-button>
+            <mt-button @click.prevent="upPage">
               <i class="iconfont iconprevious"></i>
               上一章
             </mt-button>
@@ -14,7 +14,7 @@
               <i class="iconfont iconmulu"></i>
               目录
             </mt-button>
-            <mt-button type="primary" class="btn-next">
+            <mt-button type="primary" class="btn-next" @click.prevent="nextPage">
               <i class="iconfont iconnext"></i>
               <span>下一章</span>
             </mt-button>
@@ -25,7 +25,7 @@
     <div class="setting-page" v-show="setting" @click="setting = false">
       <div class="setting-header" flex="main:justify">
         <div class="header-btn" flex="main:center cross:center"
-             @click.prevent="$router.back()">
+             @click.stop="$router.back()">
           <i class="iconfont iconback"></i>
           <span>返回</span>
         </div>
@@ -40,7 +40,8 @@
       <div class="setting-footer">
         <ul flex="box:mean">
           <li flex="dir:top cross:center main:center"
-              v-for="(item, index) in settingFooter" :key="index">
+              v-for="(item, index) in settingFooter" :key="index"
+              @click.stop.prevent="handleFooterBar(index)">
             <i :class="`iconfont ${item.icon}`"></i>
             <span>{{item.name}}</span>
           </li>
@@ -50,13 +51,12 @@
   </div>
 </template>
 <script>
-  import {mapState} from 'vuex'
 	export default {
 		name: 'story-storyPage',
     data() {
 			return {
-        novelContent: '',
-        novelTitle: '',
+        info: {},
+				sectionInfo: [],
 				setting: false,
         settingFooter: [
           {
@@ -82,23 +82,72 @@
         ]
       }
     },
-		computed: mapState(['novelId']),
+    watch: {
+			$route() {
+				this.setting = false;
+        this.initData();
+      }
+    },
     created: function () {
-			// this.initSection();
       this.initData();
     },
     methods: {
-	    async initData() {
-				const {novelId, sectionId} = this.$route.query;
-				if(!this.novelId) await this.$store.dispatch('initNovel', {novelId})
-        this.initContent(sectionId);
+			// 初始化页面
+	    initData() {
+        this.initContent();
 			},
-      initContent(sectionId) {
-	      this.$store.dispatch('getContent', {sectionId}).then(res => {
-          const {title, content} = res;
-		      this.novelContent = content;
-		      this.novelTitle = title;
+      // 获取正文及其它信息
+      initContent() {
+	      this.$store.dispatch('getContent', this.$route.query).then(res => {
+          const {content, sectionInfo} = res;
+		      content.title = sectionInfo[1].sectionTitle;
+          this.info = content;
+          this.sectionInfo = sectionInfo;
+		      const appScroll = this.$refs.appScroll;
+		      console.log(appScroll.scrollTop)
+		      if(appScroll.scrollTop !== 0) {
+			      appScroll.scrollTop = 0;
+		      }
 	      })
+      },
+      // footer bar 点击信息
+	    handleFooterBar: function (index) {
+        switch (index) {
+          case 0:
+	          this.upPage();
+          	break;
+          case 4:
+	          this.nextPage();
+	          break;
+        }
+	    },
+      // 上一章
+      upPage: function () {
+        const con = this.sectionInfo[0];
+        if(con.sort !== 0){
+        	const obj = {
+        		novelId: this.$route.query.novelId,
+            sectionId: con.sectionId,
+            sort: con.sort
+          };
+        	this.$router.push(`/story-page?${this.$utils.changeObjToStr(obj)}`)
+        } else {
+	        this.$toast("没有上一章")
+        }
+      },
+      // 下一章
+      nextPage: function () {
+	      const con = this.sectionInfo[2];
+	      if(con.sort !== 0){
+		      const obj = {
+			      novelId: this.$route.query.novelId,
+			      sectionId: con.sectionId,
+			      sort: con.sort
+		      };
+		      this.$router.push(`/story-page?${this.$utils.changeObjToStr(obj)}`)
+	      } else {
+		      this.$toast("没有下一章")
+	      }
       },
       // 全屏点击
 	    handlePage(e) {
