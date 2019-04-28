@@ -290,6 +290,7 @@
       top: 1rem;
       background-color: #FFFFFF;
       overflow-y: auto;
+      -webkit-overflow-scrolling : touch;
       .page-type-li{
         line-height: 1rem;
         padding: 0 0.3rem;
