@@ -5,7 +5,7 @@
         <li class="list-item" flex="box:first"
             v-for="(item, index) in storyList" v-bind:key="index"
             @click="$router.push(`/story-detail/${item.novelId}`)">
-          <img src="https://www.biqugemm.com/files/article/image/2/2131/2131s.jpg" class="list-item-img" alt="">
+          <img :src="item.novelImg" class="list-item-img" alt="">
           <div class="list-item-info">
             <p class="info-title">{{item.novelName}}</p>
             <p class="info-author">作者: {{item.authorName}}</p>
@@ -52,6 +52,7 @@
     .list-item{
       border-radius: 4px;
       box-shadow: 0px 0px 8px 0px #d4d4d4;
+      background-color: #fff;
       padding: 0.2rem;
       .list-item-img{
         height: 2rem;

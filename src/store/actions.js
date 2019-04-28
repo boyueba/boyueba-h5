@@ -14,13 +14,10 @@ export default {
 	},
 	// 获取章节内容
 	async getContent({dispatch}, params) {
-		let obj = {};
-		await dispatch('getForm', {
+		let obj = await dispatch('getForm', {
 			url: API.novelContent,
 			data: params
-		}).then(res => {
-			obj = res;
-		});
+		})
 		return obj;
 	},
 	// 根据章节id获取章节title

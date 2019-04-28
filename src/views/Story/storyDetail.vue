@@ -34,7 +34,6 @@
       <div class="btn-read">
         <mt-button type="danger" @click="btnRead">立即阅读</mt-button>
       </div>
-
     </article>
   </div>
 </template>
@@ -48,6 +47,10 @@
     },
     created() {
 			this.initData();
+    },
+    mounted() {
+			console.log(this.$route.fullPath)
+      sessionStorage.upPageUrl = this.$route.fullPath
     },
     methods: {
 			initData: function () {
@@ -89,7 +92,8 @@
     }
   }
   .story-item{
-    padding: 10px;
+    padding: 0.2rem;
+    background-color: #fff;
     .item-img{
       height:100px;
       width: 75px;

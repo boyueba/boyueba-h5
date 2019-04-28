@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <header class="story-header" flex="main:center">
-      <div class="story-bar" flex="box:mean cross:center main:center">
-        <div :class="{active: index === sexIndex}"
-             v-for="(item, index) in sexList" :key="index"
-             @click="handleSex(index)">{{item.name}}</div>
+  <div class="app-page" flex="dir:top box:first">
+    <header>
+      <div class="story-header" flex="main:center">
+        <div class="story-bar" flex="box:mean cross:center main:center">
+          <div :class="{active: index === sexIndex}"
+               v-for="(item, index) in sexList" :key="index"
+               @click="handleSex(index)">{{item.name}}</div>
+        </div>
       </div>
+      <article v-if="typeVisible" @click="handleType()">
+        <div class="story-type-cover"></div>
+        <ul class="story-type">
+          <li v-for="(item, index) in typeList" :key="index">{{item.typeText}}</li>
+        </ul>
+      </article>
     </header>
-    <article>
-      <ul class="story-type">
-        <li v-for="(item, index) in typeList" :key="index">{{item.typeText}}</li>
-      </ul>
-    </article>
-    <StoryList></StoryList>
+    <div class="app-container">
+      <StoryList></StoryList>
+    </div>
   </div>
 </template>
 <script>
@@ -24,6 +29,7 @@
     },
     data() {
 			return {
+				typeVisible: false,
 				sexList: [{name: '男生', channel: 1}, {name: '女生', channel: 2}],
         sexIndex: 0,
         typeList: [],
@@ -35,10 +41,16 @@
     },
     methods: {
 			// 性别类型切换
-      handleSex: function (index) {
+      handleSex(index) {
+      	this.typeList = []; // 处理大分类切换时，有之前的数据影像
         this.sexIndex = index;
         this.getNovelType(this.sexList[index].channel);
+	      this.typeVisible = true;
       },
+      // 分类选择
+	    handleType: function (index) {
+		    this.typeVisible = false;
+	    },
       // 获取分类
       getNovelType: function (channel) {
 	      const params = {
@@ -48,17 +60,25 @@
 		      url: this.$api.novelType,
 		      data: params
 	      }).then(res => {
-		      console.log('novelType', res);
 		      this.typeList = res;
+
 	      })
       }
     }
 	}
 </script>
 <style lang="scss" scoped>
+  .app-page{
+    height: 100%;
+    width: 100%;
+  }
+  .app-container{
+    overflow-y: auto;
+  }
   .story-header{
     height: 1rem;
     border-bottom: 1px solid #e9e9e9;
+    background-color: #ffffff;
     .story-bar{
       width: 2.2rem;
       height: 0.7rem;
@@ -75,9 +95,22 @@
       }
     }
   }
+  .story-type-cover{
+    position: fixed;
+    top: calc(1rem + 1px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
   .story-type{
     line-height: 0.8rem;
     border-bottom: 1px solid #e9e9e9;
+    background-color: #fff;
+    position: fixed;
+    top: calc(1rem + 1px);
+    left: 0;
+    right: 0;
     li{
       position: relative;
       display: inline-block;
