@@ -50,12 +50,14 @@
       </div>
     </div>
     <div class="page-type" v-if="showPage">
-      <ul v-infinite-scroll="loadMore"
-          infinite-scroll-disabled="loading"
-          infinite-scroll-distance="80">
-        <li v-for="item in list" class="page-type-li"
-            @click="handleSinglePage(item)">{{ item.sectionTitle }}</li>
-      </ul>
+      <div class="page-type-scroll">
+        <ul v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="80">
+          <li v-for="item in list" class="page-type-li"
+              @click="handleSinglePage(item)">{{ item.sectionTitle }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -289,8 +291,13 @@
       right: 0;
       top: 1rem;
       background-color: #FFFFFF;
-      overflow-y: auto;
-      -webkit-overflow-scrolling : touch;
+      overflow: hidden;
+      .page-type-scroll {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling : touch;
+      }
       .page-type-li{
         line-height: 1rem;
         padding: 0 0.3rem;

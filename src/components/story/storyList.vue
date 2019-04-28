@@ -54,6 +54,7 @@
       box-shadow: 0px 0px 8px 0px #d4d4d4;
       background-color: #fff;
       padding: 0.2rem;
+      margin-bottom: 0.2rem;
       .list-item-img{
         height: 2rem;
         width: 1.5rem;
